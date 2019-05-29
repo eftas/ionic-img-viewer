@@ -1,30 +1,35 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import {Directive, ElementRef, EventEmitter, HostListener, Input, Output} from '@angular/core';
 
-import { ImageViewerComponent } from './image-viewer.component';
-import { ImageViewer } from './image-viewer';
-import { ImageViewerController } from './image-viewer.controller';
+import {ImageViewerComponent} from './image-viewer.component';
+import {ImageViewer} from './image-viewer';
+import {ImageViewerController} from './image-viewer.controller';
 
 @Directive({
-	selector: '[imageViewer]'
+    selector: '[imageViewer]'
 })
 export class ImageViewerDirective {
 
-	@Input('imageViewer') src: string;
-	@Input('attribution') attr: string;
-	@Output() close = new EventEmitter();
+    @Input('imageViewer') src: string;
+    @Input('attribution') attr: string;
+    @Output() close = new EventEmitter();
 
-	constructor(
-		private _el: ElementRef,
-		private imageViewerCtrl: ImageViewerController
-	) { }
+    constructor(
+        private _el: ElementRef,
+        private imageViewerCtrl: ImageViewerController
+    ) {
+    }
 
-	@HostListener('click', ['$event']) onClick(event: Event): void {
-		event.stopPropagation();
+    @HostListener('click', ['$event']) onClick(event: Event): void {
+        event.stopPropagation();
 
-		const element = this._el.nativeElement;
-		const onCloseCallback = () => this.close.emit();
+        const element = this._el.nativeElement;
+        const onCloseCallback = () => this.close.emit();
 
-		const imageViewer = this.imageViewerCtrl.create(element, { fullResImage: this.src, onCloseCallback, attribution: this.attr });
-		imageViewer.present();
-	}
+        const imageViewer = this.imageViewerCtrl.create(element, {
+            fullResImage: this.src,
+            onCloseCallback,
+            attribution: this.attr
+        });
+        imageViewer.present();
+    }
 }
